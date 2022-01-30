@@ -1,0 +1,111 @@
+-- made by tonkla made by tonkla made by tonkla made by tonkla --
+getgenv().gogo = false
+getgenv().nm = nil
+getgenv().taget = "Ff"
+----------   join team   -------------
+for i,v in pairs(getconnections(game:GetService("Players").LocalPlayer.PlayerGui.Main.ChooseTeam.Container.Pirates.Frame.ViewportFrame.TextButton.MouseButton1Click)) do
+    v.Function()
+end
+----------  reset stats   -------------
+game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward","Refund","2")
+----------  check mon Distance  -------------
+if game:GetService("ReplicatedStorage"):FindFirstChild("Peanut President [Lv. 2100]") then
+    getgenv().nm = "Peanut President [Lv. 2100]"
+elseif game:GetService("ReplicatedStorage"):FindFirstChild("Fishman Raider [Lv. 1775]") then
+    getgenv().nm = "Fishman Raider [Lv. 1775]"
+end
+----------  tween function   -------------
+function tween(P1)
+    Distance = (game:GetService("ReplicatedStorage")[getgenv().nm].HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+    if Distance < 250 then
+        Speed = 1000
+    elseif Distance < 500 then
+        Speed = 400
+    elseif Distance < 1000 then
+        Speed = 350
+    elseif Distance >= 1000 then
+        Speed = 200
+    end
+    game:GetService("TweenService"):Create(
+        game.Players.LocalPlayer.Character.HumanoidRootPart,
+        TweenInfo.new(Distance/Speed, Enum.EasingStyle.Linear),
+        {CFrame = P1}
+    ):Play()
+end
+----------  teleport function   -------------
+function tp(s)
+    pcall(function()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = s.Character.HumanoidRootPart.CFrame
+    end) 
+end
+----------  changetarget function   -------------
+gg =  1
+cc = 1
+function changetarget()
+    for i,v in pairs(game:GetService("Players"):GetChildren()) do
+        if v.Name ~= game.Players.LocalPlayer.Name then
+            if gg == cc then
+                getgenv().taget = v
+                print(getgenv().taget)
+            end
+            gg = gg + 1
+        end
+    end
+    cc = cc + 1
+    gg = 1
+end
+changetarget()
+----------  check mon tween   -------------
+if game:GetService("ReplicatedStorage"):FindFirstChild("Peanut President [Lv. 2100]") then
+    tween(game:GetService("ReplicatedStorage")["Peanut President [Lv. 2100]"].HumanoidRootPart.CFrame)
+elseif game:GetService("ReplicatedStorage"):FindFirstChild("Fishman Raider [Lv. 1775]") then
+    tween(game:GetService("ReplicatedStorage")["Fishman Raider [Lv. 1775]"].HumanoidRootPart.CFrame)
+end
+----------  bypass teleport  -------------
+game.Players.LocalPlayer.Character.Humanoid:SetStateEnabled(15,false)
+wait(Distance/Speed + 1)
+----------  bypass critical  -------------
+local gg = getrawmetatable(game)
+local old = gg.__namecall
+setreadonly(gg,false)
+gg.__namecall = newcclosure(function(...)
+    local method = getnamecallmethod()
+    local args = {...}
+    if tostring(method) == "FireServer" then
+        if tostring(args[1]) == "RigControllerEvent" then
+            args[4] = 3 
+            return old(unpack(args))
+        end
+    end
+    return old(...)
+end)
+----------  select players  -------------
+spawn(function()
+    while wait() do 
+        if getgenv().skip == true then
+            changetarget()
+            getgenv().gogo = false
+            getgenv().skip = false
+        else
+            repeat
+                wait()
+                tp(getgenv().taget)
+                getgenv().gogo = true
+            until getgenv().taget.Character.Humanoid.Health == 0 or getgenv().skip
+        end
+    end
+end)
+----------  check players un pvp  -------------
+spawn(function()
+    while wait() do 
+        if getgenv().gogo then
+            local Health = getgenv().taget.Character.Humanoid.Health
+            wait(8)
+            if Health == getgenv().taget.Character.Humanoid.Health then 
+                print("Skip")
+                getgenv().skip = true
+            end
+        end
+    end
+end)
+-- made by tonkla made by tonkla made by tonkla made by tonkla --
