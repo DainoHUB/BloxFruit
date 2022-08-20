@@ -1,0 +1,4 @@
+-- moibile
+loadstring(game:HttpGet("https://raw.githubusercontent.com/DainoHUB/BloxFruit/main/mobile"))()
+-- pc
+loadstring(game:HttpGet("https://raw.githubusercontent.com/DainoHUB/BloxFruit/main/XD"))()
